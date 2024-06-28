@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import Diamod from "@/assets/images/diamond.png";
 import Lightning from "@/assets/images/lightning.png";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { displayNumbers } from "@/lib/utils";
 
 interface PrizeProps {
   diamonds: number;
@@ -26,7 +27,7 @@ const Prize = ({ diamonds, Icon, medalTitle, index }: PrizeProps) => {
       </Button>
       <div className="flex mt-3 items-center gap-2 font-extrabold text-[36px] text-white">
         <img src={Diamod} alt="diamond" className="h-9" />
-        <div>{diamonds}</div>
+        <div>{displayNumbers(diamonds)}</div>
       </div>
       <div className="bg-[#C3C3C340] mt-2 gap-2 font-bold text-[15px] w-auto px-6 py-1 justify-center h-auto text-white flex rounded-[11px] items-center">
         <div>{medalTitle}</div>
