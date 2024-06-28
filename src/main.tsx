@@ -3,20 +3,23 @@ import "./index.css";
 import { RecoilRoot } from "recoil";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Home";
-import DashLayout from "./components/layout/DashLayout";
+import Layout from "./components/layout/Layout";
 import SplashPage from "./pages/Spash";
 import { Suspense } from "react";
+import GameLayout from "./components/layout/GameLayout";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <RecoilRoot>
-    <DashLayout>
+    <Layout>
       <Suspense fallback={<SplashPage />}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-          </Routes>
-        </BrowserRouter>
+        <GameLayout>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+            </Routes>
+          </BrowserRouter>
+        </GameLayout>
       </Suspense>
-    </DashLayout>
+    </Layout>
   </RecoilRoot>
 );

@@ -73,16 +73,14 @@
 @layer base {
   * {
     @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: Nunito;
   }
 
+
   body {
-    background-image: url("/sea-ground.svg"), url("/background-logo.png"),
+    background-image: url("/sea-ground.svg"), url("/background-logo.svg"),
       radial-gradient(50% 50% at 50% 50%, #7b3fe7 0%, #6327ce 100%);
-    background-position: bottom, center;
+    background-position: bottom, center 80%;
     background-size: 100% auto, auto;
     background-repeat: no-repeat;
     background-color: #7b3fe7;
@@ -92,3 +90,57 @@
     width: 100%;
   }
 }
+
+@font-face {
+  font-family: "c";
+  src: url("./assets/fonts/Distruction/Distruction.otf");
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/fonts/Nunito/static/Nunito-Black.ttf");
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/fonts/Nunito/static/Nunito-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/fonts/Nunito/static/Nunito-ExtraBold.ttf");
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/fonts/Nunito/static/Nunito-Bold.ttf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/fonts/Nunito/static/Nunito-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/fonts/Nunito/static/Nunito-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/fonts/Nunito/static/Nunito-Light.ttf");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./assets/fonts/Nunito/static/Nunito-ExtraLight.ttf");
+  font-weight: 200;
+}
+
