@@ -1,13 +1,16 @@
 import React from "react";
-import Navbar from "../common/Navbar";
 import Controls from "../common/Controls";
+import Navbar from "../common/Navbar";
+import WaterWrapper from "./WaterWrapper";
 
 const GameLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative h-full">
-      <Navbar />
-      {children}
-      <Controls />
+      <WaterWrapper>
+        <Navbar />
+        {children}
+        <Controls />
+      </WaterWrapper>
     </div>
   );
 };
