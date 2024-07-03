@@ -3,7 +3,6 @@ import AnimatedNumber from "@/components/common/AnimatedNumber";
 import Controls from "@/components/common/Controls";
 import Water from "@/components/common/Water";
 import { Button } from "@/components/ui/button";
-import { currentDataAtom, tabsAtom } from "@/lib/atom";
 import { seaCreatures } from "@/lib/seacreatures";
 import { cn, displayNumbers } from "@/lib/utils";
 import ProgressBar from "@ramonak/react-progress-bar";
