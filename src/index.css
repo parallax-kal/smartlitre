@@ -76,24 +76,17 @@
     font-family: Nunito;
   }
 
-
   body {
     background-image: url("/sea-ground.svg"), url("/background-logo.svg"),
       radial-gradient(50% 50% at 50% 50%, #7b3fe7 0%, #6327ce 100%);
     background-position: bottom, center 80%;
     background-size: 100% auto, auto;
-    background-repeat: no-repeat;
-    background-color: #7b3fe7;
-    background-repeat: no-repeat;
-    overflow: hidden;
-    height: 100vh;
-    width: 100%;
   }
 }
 
 @font-face {
-  font-family: "c";
-  src: url("./assets/fonts/Distruction/Distruction.otf");
+  font-family: "Distruction";
+  src: url("./assets/fonts/Distruction/Distruction.ttf");
 }
 
 @font-face {
@@ -144,3 +137,14 @@
   font-weight: 200;
 }
 
+.fish {
+  height: 15rem;
+  width: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #5417b0;
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
