@@ -1,14 +1,15 @@
-import { seaCreatures } from "@/lib/seacreatures";
-import { Button } from "@/components/ui/button";
 import Diamod from "@/assets/images/diamond.png";
-import ProgressBar from "@ramonak/react-progress-bar";
+import Controls from "@/components/common/Controls";
+import Water from "@/components/common/Water";
+import { Button } from "@/components/ui/button";
+import { tabsAtom } from "@/lib/atom";
+import { seaCreatures } from "@/lib/seacreatures";
 import { displayNumbers } from "@/lib/utils";
-import { BsLightningFill } from "react-icons/bs";
+import ProgressBar from "@ramonak/react-progress-bar";
 import { useState } from "react";
 import Confetti from "react-confetti";
+import { BsLightningFill } from "react-icons/bs";
 import { useRecoilState } from "recoil";
-import { tabsAtom } from "@/lib/atom";
-import Controls from "@/components/common/Controls";
 
 const HomePage = () => {
   const { Medal, diamonds, title, Fish } = seaCreatures[0];
@@ -70,7 +71,9 @@ const HomePage = () => {
                   maskImage: `url(${Fish})`,
                 }
           }
-        ></div>
+        >
+          <Water />
+        </div>
         {showConfetti && (
           <Confetti className="w-full h-screen absolute top-0 z-50 " />
         )}

@@ -1,10 +1,13 @@
-import PumpIcon from "@/assets/svg/pump.svg?react";
+import Diamod from "@/assets/images/diamond.png";
 import BoostIcon from "@/assets/svg/boost.svg?react";
 import EarnIcon from "@/assets/svg/earn.svg?react";
 import FriendsIcon from "@/assets/svg/friends.svg?react";
-import EarnIcon from "@/assets/svg/earn.svg?react";
-import BoostIcon from "@/assets/svg/boost.svg?react";
+import PumpIcon from "@/assets/svg/pump.svg?react";
 import { Button } from "@/components/ui/button";
+import { waterLevelState } from "@/lib/atom";
+import { useState } from "react";
+import { IoCloseCircleSharp } from "react-icons/io5";
+import { useRecoilState } from "recoil";
 import {
   Drawer,
   DrawerClose,
@@ -12,9 +15,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import { useState } from "react";
-import { IoCloseCircleSharp } from "react-icons/io5";
-import Diamod from "@/assets/images/diamond.png";
 
 const bottomControls = [
   {
@@ -37,39 +37,13 @@ const dropsDays = [
 
 const Controls = () => {
   const [showPumpDrawer, setShowPumpDrawer] = useState(false);
-
+  const [, setWaterLevel] = useRecoilState(waterLevelState);
   const handleControl = (label: string) => {
     if (label === "Pump") {
       setShowPumpDrawer(true);
     }
   };
 
-import PumpIcon from "@/assets/svg/pump.svg?react";
-import { waterLevelState } from "@/lib/atom";
-import { useRecoilState } from "recoil";
-import { Button } from "../ui/button";
-
-const Controls = () => {
-  const [, setWaterLevel] = useRecoilState(waterLevelState);
-  const bottomControls = [
-    {
-      label: "Pump",
-      icon: PumpIcon,
-      onClick: () => setWaterLevel((prev) => (prev + 10) % 90),
-    },
-    {
-      label: "Friends",
-      icon: FriendsIcon,
-    },
-    {
-      label: "Earn",
-      icon: EarnIcon,
-    },
-    {
-      label: "Boost",
-      icon: BoostIcon,
-    },
-  ];
   return (
     <div className="flex gap-3 justify-center w-full">
       <Drawer open={showPumpDrawer} onOpenChange={setShowPumpDrawer}>
@@ -104,6 +78,9 @@ const Controls = () => {
             {dropsDays.map((drops, index) => (
               <Button
                 key={index}
+                onClick={() => {
+                  setWaterLevel((prev) => prev + (drops / 100));
+                }}
                 className="text-white font-extrabold text-[12px] leading-[18px] flex flex-col h-auto bg-[#C3C3C33D]"
               >
                 <div>Day {index + 1}</div>
@@ -112,7 +89,7 @@ const Controls = () => {
               </Button>
             ))}
           </div>
-          <div className='px-4  w-full mt-4'>
+          <div className="px-4  w-full mt-4">
             <Button className="bg-[#9712F4] font-bold h-12 w-full text-[16px] text-white rounded-full">
               Pump
             </Button>
@@ -124,12 +101,6 @@ const Controls = () => {
           key={index}
           onClick={() => handleControl(control.label)}
           className="flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 bg-[#C3C3C340]"
-        >
-          <control.icon height={24} />
-        <Button
-          key={index}
-          className="flex flex-col items-center h-auto gap-1 bg-[#C3C3C340]"
-          onClick={control.onClick}
         >
           <control.icon height={24} />
           <div>{control.label}</div>

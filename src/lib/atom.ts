@@ -12,5 +12,5 @@ export const tabsAtom = atom({
 
 export const waterLevelState = atom({
   key: "waterLevelState",
-  default: 30,
+  default: 10,
 });
