@@ -4,6 +4,8 @@ import { Toaster } from "react-hot-toast";
 import { useRecoilValue } from "recoil";
 import { tabsAtom } from "@/lib/atom";
 import JoinTank from "@/pages/JoinTank";
+import Leaderboard from "@/pages/Leaderboard";
+import Friends from "@/pages/Friends";
 
 const tabs = [
   {
@@ -13,6 +15,14 @@ const tabs = [
   {
     name: "jointank",
     Component: JoinTank,
+  },
+  {
+    name: "leaderboard",
+    Component: Leaderboard,
+  },
+  {
+    name: "friends",
+    Component: Friends,
   },
 ];
 
@@ -26,6 +36,7 @@ const GameLayout = () => {
         const { name, Component } = tab;
         return (
           <div
+            key={name}
             className={`${
               name !== tabsState[tabsState.length - 1] ? "hidden" : ""
             } grow shrink basis-auto flex flex-col justify-between pb-4`}
