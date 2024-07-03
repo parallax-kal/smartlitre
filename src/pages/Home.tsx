@@ -6,15 +6,22 @@ import { displayNumbers } from "@/lib/utils";
 import { BsLightningFill } from "react-icons/bs";
 import { useState } from "react";
 import Confetti from "react-confetti";
-import { useRecoilState } from "recoil";
-import { tabsAtom } from "@/lib/atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { currentDataAtom, tabsAtom } from "@/lib/atom";
 import Controls from "@/components/common/Controls";
+import AnimatedNumber from "@/components/common/AnimatedNumber";
 
 const HomePage = () => {
-  const { Medal, diamonds, title, Fish } = seaCreatures[0];
+  const { Medal, drops, title, Fish } = seaCreatures[0];
   const [showConfetti] = useState(false);
   const [waterLevel] = useState(0);
   const [tabs, setTabs] = useRecoilState(tabsAtom);
+  const setCurrentSeaCreature = useSetRecoilState(currentDataAtom);
+  const [numbers, setNumbers] = useState<number[]>([]);
+
+  const handleClick = () => {
+    setNumbers([...numbers, 10]);
+  };
 
   return (
     <>
@@ -28,16 +35,26 @@ const HomePage = () => {
         >
           Join Tank
         </Button>
-        <div className="flex mt-1 justify-center items-center gap-2 font-extrabold text-[36px] text-white">
+        <div className="flex mt-1 justify-center items-center gap-2 font-extrabold text-[36px]">
           <img src={Diamod} alt="diamond" className="mt-1 h-9" />
-          <div>{displayNumbers(diamonds)}</div>
+          <div>{displayNumbers(drops)}</div>
         </div>
-        <Button className="bg-[#C3C3C340] gap-2 font-bold text-[15px] w-auto px-6 py-1 justify-center h-auto text-white flex rounded-[11px] items-center">
+        <Button
+          onClick={() => {
+            setCurrentSeaCreature({
+              image: Fish,
+              medal: title,
+              waterLevel,
+            });
+            setTabs([...tabs, "leaderboard"]);
+          }}
+          className="bg-[#C3C3C340] gap-2 font-bold text-[15px] w-auto px-6 py-1 justify-center h-auto flex rounded-[11px] items-center"
+        >
           <div>{title}</div>
           {Medal && <Medal className="h-5 w-5" />}
         </Button>
-        <div className="w-full px-8 mt-3">
-          <div className="flex justify-between text-white font-bold">
+        <div className="w-full px-4 mt-3">
+          <div className="flex justify-between font-bold">
             <div className="text-[11px]">Hydration Goal</div>
             <div className="text-[10px]">
               Level {waterLevel === 0 ? 0 : Math.floor((waterLevel / 100) * 6)}
@@ -55,11 +72,17 @@ const HomePage = () => {
           />
           <div className="items-center mt-2 flex gap-1">
             <BsLightningFill color="#ffcc20" />
-            <div className="text-white font-extrabold text-[10px]">500/500</div>
+            <div className="font-extrabold text-[10px]">500/500</div>
           </div>
         </div>
+        <div className="absolute top-[50%] w-24 h-24 mt-5">
+          {numbers.map((number, index) => (
+            <AnimatedNumber key={index} number={number} />
+          ))}
+        </div>
         <div
-          className="fish relative  overflow-hidden mt-2"
+          onClick={handleClick}
+          className="h-[15rem] w-full bg-contain bg-center bg-[#5417b0] relative overflow-hidden mt-2"
           style={
             waterLevel === 100
               ? {
@@ -68,6 +91,8 @@ const HomePage = () => {
                 }
               : {
                   maskImage: `url(${Fish})`,
+                  maskSize: "100% 100%",
+                  maskPosition: "center",
                 }
           }
         ></div>

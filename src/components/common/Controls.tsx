@@ -14,7 +14,10 @@ import {
 } from "../ui/drawer";
 import { useEffect, useState } from "react";
 import { IoCloseCircleSharp } from "react-icons/io5";
-import Diamod from "@/assets/images/diamond.png";
+import Diamond from "@/assets/images/diamond.png";
+import { displayNumbers } from "@/lib/utils";
+import { useRecoilState } from "recoil";
+import { tabsAtom } from "@/lib/atom";
 
 const bottomControls = [
   {
@@ -38,10 +41,12 @@ const dropsDays = [
 
 const Controls = () => {
   const [showPumpDrawer, setShowPumpDrawer] = useState(false);
-
+  const [tabs, setTabs] = useRecoilState(tabsAtom)
   const handleControl = (label: string) => {
     if (label === "Pump") {
       setShowPumpDrawer(true);
+    } else if (label === "Friends") {
+      setTabs([...tabs, "friends"]);
     }
   };
 
@@ -126,7 +131,7 @@ const Controls = () => {
     <div className="flex gap-3 justify-center w-full z-40">
       <Drawer open={showPumpDrawer} onOpenChange={setShowPumpDrawer}>
         <DrawerTrigger asChild>
-          <Button className="flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 text-white rounded-md  bg-[#C3C3C340]">
+          <Button className="flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 rounded-md  bg-[#C3C3C340]">
             <PumpIcon height={24} />
             <div>Pump</div>
           </Button>
@@ -137,7 +142,7 @@ const Controls = () => {
           )}
           <DrawerTitle className="flex items-center w-full justify-between mr-5">
             <div></div>
-            <div className="font-extrabold text-[24px] text-white leading-6">
+            <div className="font-extrabold text-[24px] leading-6">
               Pump DROPS
             </div>
             <DrawerClose>
@@ -150,16 +155,16 @@ const Controls = () => {
               width={100}
               className="[transform:rotateY(180deg)]"
             />
-            <img src={Diamod} alt="diamond" />
+            <img src={Diamond} alt="diamond" />
           </div>
-          <div className="font-semibold text-[16px] text-white">
+          <div className="font-semibold text-[16px]">
             Pump DROPS daily without skipping.
           </div>
           <div className="grid grid-cols-4 gap-2 px-4 mt-5">
             {dropsDays.map((drops, index) => (
               <Button
                 key={index}
-                className={`text-white font-extrabold text-[12px] leading-[18px] flex flex-col h-auto  ${
+                className={`font-extrabold text-[12px] leading-[18px] flex flex-col h-auto  ${
                   collected[index]
                     ? "bg-[#20C962] border-2 border-[#20C962] hover:bg-[#38c76f]"
                     : "bg-[#C3C3C33D] border-2 border-transparent hover:bg-[#f7eded3d]"
@@ -170,8 +175,8 @@ const Controls = () => {
                 }`}
               >
                 <div>Day {index + 1}</div>
-                <img src={Diamod} alt="diamond" />
-                <div>{drops}</div>
+                <img src={Diamond} alt="diamond" />
+                <div>{displayNumbers(drops)}</div>
               </Button>
             ))}
           </div>
@@ -180,7 +185,7 @@ const Controls = () => {
               <Button
                 onClick={handlePump}
                 disabled={!isPumpAvailable}
-                className="bg-[#9712F4] font-bold h-12 w-full text-[16px] text-white rounded-full"
+                className="bg-[#9712F4] font-bold h-12 w-full text-[16px] rounded-full"
               >
                 Pump
               </Button>
