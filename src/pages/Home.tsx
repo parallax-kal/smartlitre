@@ -20,7 +20,7 @@ const HomePage = () => {
   const setCurrentSeaCreature = useSetRecoilState(currentDataAtom);
   const [numbers, setNumbers] = useState<number[]>([]);
 
-  const STEP = 10;
+  const STEP = 1;
 
   const handleClick = () => {
     if (waterLevel < 100) setNumbers([...numbers, STEP]);

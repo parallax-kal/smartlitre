@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, memo } from "react";
-import { easings, useSpring } from "react-spring";
+import { easings, useSpring } from "@react-spring/web";
 
 const Water = memo(({ incomingWaterLevel }: { incomingWaterLevel: number }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -67,7 +67,7 @@ const Water = memo(({ incomingWaterLevel }: { incomingWaterLevel: number }) => {
         if (ctx) drawWater(ctx, waterLevel.get(), offsetRef.current);
         animationRef.current = requestAnimationFrame(animate);
       };
-      
+
       animate();
     }
 
