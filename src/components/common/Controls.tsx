@@ -4,7 +4,7 @@ import EarnIcon from "@/assets/svg/earn.svg?react";
 import FriendsIcon from "@/assets/svg/friends.svg?react";
 import PumpIcon from "@/assets/svg/pump.svg?react";
 import { Button } from "@/components/ui/button";
-import { tabsAtom, waterLevelState } from "@/lib/atom";
+import { tabsAtom } from "@/lib/atom";
 import { displayNumbers } from "@/lib/utils";
 import { useState } from "react";
 import { IoCloseCircleSharp } from "react-icons/io5";
@@ -39,7 +39,6 @@ const dropsDays = [
 const Controls = () => {
   const [showPumpDrawer, setShowPumpDrawer] = useState(false);
   const [tabs, setTabs] = useRecoilState(tabsAtom);
-  const [, setWaterLevel] = useRecoilState(waterLevelState);
   const handleControl = (label: string) => {
     if (label === "Pump") {
       setShowPumpDrawer(true);
@@ -82,9 +81,6 @@ const Controls = () => {
             {dropsDays.map((drops, index) => (
               <Button
                 key={index}
-                onClick={() => {
-                  setWaterLevel((prev) => prev + drops / 100);
-                }}
                 className="font-extrabold text-[12px] leading-[18px] flex flex-col h-auto bg-[#C3C3C33D]"
               >
                 <div>Day {index + 1}</div>

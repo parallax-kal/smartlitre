@@ -6,10 +6,6 @@ export const tabsAtom = atom({
   default: ["home"],
 });
 
-export const waterLevelState = atom({
-  key: "waterLevelState",
-  default: 10,
-});
 
 export const currentDataAtom = atom<CurrentData>({
   key: "currentSeaCreatureAtom",
