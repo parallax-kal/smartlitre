@@ -6,6 +6,7 @@ import { tabsAtom } from "@/lib/atom";
 import JoinTank from "@/pages/JoinTank";
 import Leaderboard from "@/pages/Leaderboard";
 import Friends from "@/pages/Friends";
+import Tank from "@/pages/Tank";
 
 const tabs = [
   {
