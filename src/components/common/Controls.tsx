@@ -1,10 +1,11 @@
-import Diamod from "@/assets/images/diamond.png";
+import Diamond from "@/assets/images/diamond.png";
 import BoostIcon from "@/assets/svg/boost.svg?react";
 import EarnIcon from "@/assets/svg/earn.svg?react";
 import FriendsIcon from "@/assets/svg/friends.svg?react";
 import PumpIcon from "@/assets/svg/pump.svg?react";
 import { Button } from "@/components/ui/button";
-import { waterLevelState } from "@/lib/atom";
+import { tabsAtom, waterLevelState } from "@/lib/atom";
+import { displayNumbers } from "@/lib/utils";
 import { useState } from "react";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { useRecoilState } from "recoil";
@@ -37,10 +38,13 @@ const dropsDays = [
 
 const Controls = () => {
   const [showPumpDrawer, setShowPumpDrawer] = useState(false);
+  const [tabs, setTabs] = useRecoilState(tabsAtom);
   const [, setWaterLevel] = useRecoilState(waterLevelState);
   const handleControl = (label: string) => {
     if (label === "Pump") {
       setShowPumpDrawer(true);
+    } else if (label === "Friends") {
+      setTabs([...tabs, "friends"]);
     }
   };
 
@@ -48,7 +52,7 @@ const Controls = () => {
     <div className="flex gap-3 justify-center w-full">
       <Drawer open={showPumpDrawer} onOpenChange={setShowPumpDrawer}>
         <DrawerTrigger asChild>
-          <Button className="flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 text-white rounded-md  bg-[#C3C3C340]">
+          <Button className="flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 rounded-md  bg-[#C3C3C340]">
             <PumpIcon height={24} />
             <div>Pump</div>
           </Button>
@@ -56,7 +60,7 @@ const Controls = () => {
         <DrawerContent className="pt-6 flex flex-col items-center pb-3">
           <DrawerTitle className="flex items-center w-full justify-between mr-5">
             <div></div>
-            <div className="font-extrabold text-[24px] text-white leading-6">
+            <div className="font-extrabold text-[24px] leading-6">
               Pump DROPS
             </div>
             <DrawerClose>
@@ -69,9 +73,9 @@ const Controls = () => {
               width={100}
               className="[transform:rotateY(180deg)]"
             />
-            <img src={Diamod} alt="diamond" />
+            <img src={Diamond} alt="diamond" />
           </div>
-          <div className="font-semibold text-[16px] text-white">
+          <div className="font-semibold text-[16px]">
             Pump DROPS daily without skipping.
           </div>
           <div className="grid grid-cols-4 gap-2 px-4 mt-5">
@@ -79,18 +83,18 @@ const Controls = () => {
               <Button
                 key={index}
                 onClick={() => {
-                  setWaterLevel((prev) => prev + (drops / 100));
+                  setWaterLevel((prev) => prev + drops / 100);
                 }}
-                className="text-white font-extrabold text-[12px] leading-[18px] flex flex-col h-auto bg-[#C3C3C33D]"
+                className="font-extrabold text-[12px] leading-[18px] flex flex-col h-auto bg-[#C3C3C33D]"
               >
                 <div>Day {index + 1}</div>
-                <img src={Diamod} alt="diamond" />
-                <div>{drops}</div>
+                <img src={Diamond} alt="diamond" />
+                <div>{displayNumbers(drops)}</div>
               </Button>
             ))}
           </div>
           <div className="px-4  w-full mt-4">
-            <Button className="bg-[#9712F4] font-bold h-12 w-full text-[16px] text-white rounded-full">
+            <Button className="bg-[#9712F4] font-bold h-12 w-full text-[16px] rounded-full">
               Pump
             </Button>
           </div>
