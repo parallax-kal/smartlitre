@@ -24,7 +24,6 @@ import { FaChevronRight } from "react-icons/fa6";
 import toast from "react-hot-toast";
 
 const HomePage = () => {
-  const { Medal, drops, title, Fish } = seaCreatures[2];
   const [showConfetti, setShowConfetti] = useState(false);
   const [waterLevel, setWaterLevel] = useState(0);
   const [tabs, setTabs] = useRecoilState(tabsAtom);
@@ -33,31 +32,49 @@ const HomePage = () => {
 
   const [numbers, setNumbers] = useState<number[]>([]);
 
-  const STEP = 1;
+  const [progress, setProgress] = useState(0);
+  const [level, setLevel] = useState(0);
 
-  const handleClick = () => {
-    if (waterLevel < 100) setNumbers([...numbers, STEP]);
-    setWaterLevel((prev) => Math.min(prev + STEP, 100));
-    if (waterLevel + STEP >= 100) {
-      setShowConfetti(true);
-      setTimeout(() => {
-        setShowConfetti(false);
-      }, 30000);
+  const { Medal, drops, title, Fish } = seaCreatures[level];
+
+  // const STEP = 1;
+  // const handleClick = () => {
+  //   if (waterLevel < 100) setNumbers([...numbers, STEP]);
+  //   setWaterLevel((prev) => Math.min(prev + STEP, 100));
+  //   if (waterLevel + STEP >= 100) {
+  //     setShowConfetti(true);
+  //     setTimeout(() => {
+  //       setShowConfetti(false);
+  //     }, 30000);
+  //   }
+  // };
+
+  const handleClick = (addition: number) => {
+    if (level < 6 && progress < 100) {
+      setProgress((prev) => {
+        const newProgress = prev + addition;
+        if (newProgress >= 100 && level < 5) {
+          setShowConfetti(true);
+          setTimeout(() => {
+            setLevel(level + 1);
+            return 0;
+          }, 5000);
+        }else if (level === 5 && newProgress >= 100){
+          setShowConfetti(true);
+          setTimeout(() => {
+            setLevel(0)
+          }, 5000);
+        }
+        return newProgress;
+      });
+      setNumbers([...numbers, parseInt(addition.toFixed(2))]);
     }
   };
 
   useEffect(() => {
-    if (waterLevel === 100) {
-      setNumbers([]);
-    }
-  }, [waterLevel]);
-
-  useEffect(() => {
-    if (waterLevel === 100) {
-      setWaterLevel(0);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title]);
+    setProgress(0);
+    setShowConfetti(false);
+  }, [level]);
 
   return (
     <>
@@ -102,13 +119,14 @@ const HomePage = () => {
               <DrawerClose
                 onClick={() => {
                   setCurrentTank({ name: "", image: "" });
-                  toast.error(`You Left the ${currentTank.name} Tank`,{
-                    className:'!w-full !rounded-full !bg-[#6a1fc9] !text-white !font-bold !flex !items-center !justify-start ',
-                    iconTheme:{
-                      primary:"white",
-                      secondary:"#6a1fc9"
-                    }
-                  }) 
+                  toast.error(`You Left the ${currentTank.name} Tank`, {
+                    className:
+                      "!w-full !rounded-full !bg-[#6a1fc9] !text-white !font-bold !flex !items-center !justify-start ",
+                    iconTheme: {
+                      primary: "white",
+                      secondary: "#6a1fc9",
+                    },
+                  });
                 }}
                 className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
                 style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
@@ -140,12 +158,12 @@ const HomePage = () => {
           <div className="flex justify-between font-bold">
             <div className="text-[11px]">Hydration Goal</div>
             <div className="text-[10px]">
-              Level {waterLevel === 0 ? 0 : Math.floor((waterLevel / 100) * 6)}
+              Level {level + 1}
               /6
             </div>
           </div>
           <ProgressBar
-            completed={waterLevel}
+            completed={progress}
             bgColor="#65E4F0"
             height="5px"
             transitionDuration="0.5s"
@@ -165,16 +183,31 @@ const HomePage = () => {
           ))}
         </div>
         <div
-          onClick={handleClick}
+          onClick={() =>
+            handleClick(
+              level === 0
+                ? 16.666666667
+                : level === 1
+                ? 12.5
+                : level === 2
+                ? 10
+                : level === 3
+                ? 8.333333333
+                : level === 4
+                ? 6.666666667
+                : 5
+            )
+          }
           className={cn(
             "h-[15rem] w-full bg-contain bg-center bg-no-repeat bg-[#5417b0] relative overflow-hidden mt-2",
-            waterLevel < 100 ? "cursor-pointer" : "animate-bounce"
+            progress >= 100 ? "animate-bounce" : ""
           )}
           style={
-            waterLevel === 100
+            progress >= 100
               ? {
                   backgroundImage: `url(${Fish})`,
                   backgroundColor: "transparent",
+                  scale: 100,
                 }
               : {
                   maskImage: `url(${Fish})`,
@@ -183,12 +216,12 @@ const HomePage = () => {
                 }
           }
         >
-          {waterLevel < 100 && waterLevel > 0 && (
-            <Water incomingWaterLevel={waterLevel} />
+          {progress < 100 && progress > 0 && (
+            <Water incomingWaterLevel={progress} />
           )}
         </div>
         {showConfetti && (
-          <Confetti className="w-full h-screen absolute top-0 z-50 " />
+          <Confetti className="w-full h-screen absolute top-0 z-50" numberOfPieces={1500} recycle={false} gravity={0.09} />
         )}
       </div>
       <Controls />
