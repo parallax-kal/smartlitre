@@ -1,8 +1,15 @@
-import PumpIcon from "@/assets/svg/pump.svg?react";
-import FriendsIcon from "@/assets/svg/friends.svg?react";
-import EarnIcon from "@/assets/svg/earn.svg?react";
+import Diamond from "@/assets/images/diamond.png";
 import BoostIcon from "@/assets/svg/boost.svg?react";
+import EarnIcon from "@/assets/svg/earn.svg?react";
+import FriendsIcon from "@/assets/svg/friends.svg?react";
+import PumpIcon from "@/assets/svg/pump.svg?react";
 import { Button } from "@/components/ui/button";
+
+import { tabsAtom } from "@/lib/atom";
+import { displayNumbers } from "@/lib/utils";
+import { useState ,useEffect} from "react";
+import { IoCloseCircleSharp } from "react-icons/io5";
+import { useRecoilState } from "recoil";
 import Confetti from "react-confetti";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -12,12 +19,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import { useEffect, useState } from "react";
-import { IoCloseCircleSharp } from "react-icons/io5";
-import Diamond from "@/assets/images/diamond.png";
-import { displayNumbers } from "@/lib/utils";
-import { useRecoilState } from "recoil";
-import { tabsAtom } from "@/lib/atom";
+
 
 const bottomControls = [
   {
@@ -41,7 +43,7 @@ const dropsDays = [
 
 const Controls = () => {
   const [showPumpDrawer, setShowPumpDrawer] = useState(false);
-  const [tabs, setTabs] = useRecoilState(tabsAtom)
+  const [tabs, setTabs] = useRecoilState(tabsAtom);
   const handleControl = (label: string) => {
     if (label === "Pump") {
       setShowPumpDrawer(true);
@@ -181,6 +183,7 @@ const Controls = () => {
             ))}
           </div>
           <div className="px-4  w-full mt-4">
+
             {isPumpAvailable ? (
               <Button
                 onClick={handlePump}
@@ -194,6 +197,7 @@ const Controls = () => {
                 <DrawerClose>Come Back Tommorrow</DrawerClose>
               </Button>
             )}
+
           </div>
           <Toaster position="bottom-center" />
         </DrawerContent>

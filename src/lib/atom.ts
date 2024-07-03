@@ -7,6 +7,7 @@ export const tabsAtom = atom({
   default: ["home"],
 });
 
+
 export const currentDataAtom = atom<CurrentData>({
   key: "currentSeaCreatureAtom",
   default: undefined,
