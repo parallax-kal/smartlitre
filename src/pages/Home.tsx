@@ -78,7 +78,7 @@ const HomePage = () => {
               <DrawerClose
                 onClick={() => {
                   setCurrentTank({ name: "", image: "" });
-                  toast.error(`You left the ${currentTank.name} Tank`,{
+                  toast.error(`You Left the ${currentTank.name} Tank`,{
                     className:'!w-full !rounded-full !bg-[#6a1fc9] !text-white !font-bold !flex !items-center !justify-start ',
                     iconTheme:{
                       primary:"white",
