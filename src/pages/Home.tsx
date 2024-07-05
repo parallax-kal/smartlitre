@@ -145,6 +145,7 @@ const HomePage = () => {
               image: Fish,
               medal: title,
               waterLevel: currentLevelProgress,
+
             });
             setTabs([...tabs, "leaderboard"]);
           }}

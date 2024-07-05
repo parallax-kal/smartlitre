@@ -97,13 +97,14 @@ const JoinTank = () => {
                   setTabs((tabs) =>
                     tabs.length === 1 ? tabs : tabs.slice(0, tabs.length - 1)
                   );
-                  toast.success(`You joined the ${tank.name} Tank`,{
-                    className:'!w-full !rounded-full !bg-[#6a1fc9] !text-white !font-bold !flex !items-center !justify-start ',
-                    iconTheme:{
-                      primary:"white",
-                      secondary:"#6a1fc9"
-                    }
-                  })
+                  toast.success(`You joined the ${tank.name} Tank`, {
+                    className:
+                      "!w-full !rounded-full !bg-[#6a1fc9] !text-white !font-bold !flex !items-center !justify-start ",
+                    iconTheme: {
+                      primary: "white",
+                      secondary: "#6a1fc9",
+                    },
+                  });
                 }}
                 className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
                 style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
