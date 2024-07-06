@@ -39,7 +39,13 @@ const HomePage = () => {
   const [level, setLevel] = useRecoilState(levelAtom);
   const [balance, setBalance] = useRecoilState(balanceAtom);
   const [energy, setEnergy] = useRecoilState(energyAtom);
-  const [numbers, setNumbers] = useState<number[]>([]);
+  const [numbers, setNumbers] = useState<
+    {
+      number: number;
+      x: number;
+      y: number;
+    }[]
+  >([]);
 
   const [waterLevel, setWaterLevel] = useState(0);
 
@@ -47,8 +53,8 @@ const HomePage = () => {
 
   const currentLevelProgress = (balance / drops) * 100;
 
-  const handleClick = () => {
-    const addition = eval("100 / (level + 3)");
+  const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const addition = eval("100 / (10*(level+1))");
     if (level < 6 && currentLevelProgress <= 100 && energy > 0) {
       setEnergy((prev) => Math.max(prev - 1, 0));
       setBalance(balance + parseInt(addition.toFixed(1)));
@@ -66,17 +72,32 @@ const HomePage = () => {
           setWaterLevel(0);
         }, 800);
       }
-      setNumbers([...numbers, parseInt(addition.toFixed(2))]);
+      const clickX = event.clientX;
+      const clickY = event.clientY;
+      setNumbers([
+        ...numbers,
+        { number: parseInt(addition.toFixed(2)), x: clickX, y: clickY },
+      ]);
+    }
+    if (energy === 0) {
+      toast.error("You can't pump with no energy.");
     }
   };
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setEnergy((prev) => Math.min(prev + 10, 500)); // Add energy up to 500
-    }, 5000);
+      setEnergy((prev) => Math.min(prev + 1, 500)); // Add energy up to 500
+    }, 1000);
     if (energy >= 500) clearInterval(timer);
     return () => clearInterval(timer);
   }, [balance]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setNumbers([]);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [numbers]);
 
   useEffect(() => {
     if (currentLevelProgress >= 100) {
@@ -90,7 +111,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="flex px-3 flex-col items-center">
+      <div className="flex px-3 h-full flex-col items-center grow shrink basis-auto">
         {currentTank.name === "" && currentTank.image === "" ? (
           <Button
             onClick={() => {
@@ -131,14 +152,7 @@ const HomePage = () => {
               <DrawerClose
                 onClick={() => {
                   setCurrentTank({ name: "", image: "" });
-                  toast.error(`You Left the ${currentTank.name} Tank`, {
-                    className:
-                      "!w-full !rounded-full !bg-[#6a1fc9] !text-white !font-bold !flex !items-center !justify-start ",
-                    iconTheme: {
-                      primary: "white",
-                      secondary: "#6a1fc9",
-                    },
-                  });
+                  toast.error(`You Left the ${currentTank.name} Tank`);
                 }}
                 className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
                 style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
@@ -158,7 +172,6 @@ const HomePage = () => {
               image: Fish,
               medal: title,
               progress: currentLevelProgress,
-              waterLevel: waterLevel,
             });
             setTabs([...tabs, "leaderboard"]);
           }}
@@ -190,43 +203,49 @@ const HomePage = () => {
             <div className="font-extrabold text-[10px]">{energy}/500</div>
           </div>
         </div>
-        <div className="absolute top-[50%] w-24 h-24 mt-5">
-          {numbers.map((number, index) => (
-            <AnimatedNumber key={index} number={number} />
-          ))}
-        </div>
-        <div
-          onClick={handleClick}
-          className={cn(
-            "h-[15rem] w-full bg-contain bg-center bg-no-repeat bg-[#5417b0] relative overflow-hidden mt-2",
-            currentLevelProgress >= 100 ? "animate-bounce" : ""
-          )}
-          style={
-            currentLevelProgress >= 100
-              ? {
-                  backgroundImage: `url(${Fish})`,
-                  backgroundColor: "transparent",
-                  scale: 100,
-                }
-              : {
-                  maskImage: `url(${Fish})`,
-                  maskSize: "100% 100%",
-                  maskPosition: "center",
-                }
-          }
-        >
-          {waterLevel < 100 && waterLevel > 0 && (
-            <Water incomingWaterLevel={waterLevel} />
-          )}
-        </div>
-        {showConfetti && (
-          <Confetti
-            className="w-full h-screen absolute top-0 z-50"
-            numberOfPieces={1500}
-            recycle={false}
-            gravity={0.09}
+        {numbers.map((num, index) => (
+          <AnimatedNumber
+            key={index}
+            number={num.number}
+            x={num.x - 220}
+            y={num.y - 80}
           />
-        )}
+        ))}
+        <div className="flex h-full w-full justify-center items-center grow shrink basis-auto">
+          <div
+            onClick={handleClick}
+            className={cn(
+              "w-full z-20 bg-contain bg-center bg-no-repeat bg-[#5417b0] relative overflow-hidden mt-2",
+              currentLevelProgress >= 100 ? "animate-bounce" : ""
+            )}
+            style={
+              currentLevelProgress >= 100
+                ? {
+                    backgroundImage: `url(${Fish})`,
+                    backgroundColor: "transparent",
+                    height: title === "Bronze" ? 126 : 220,
+                  }
+                : {
+                    maskImage: `url(${Fish})`,
+                    maskSize: "100% 100%",
+                    maskPosition: "center",
+                    height: title === "Bronze" ? 126 : 220,
+                  }
+            }
+          >
+            {waterLevel < 100 && waterLevel > 0 && (
+              <Water incomingWaterLevel={waterLevel} />
+            )}
+          </div>
+          {showConfetti && (
+            <Confetti
+              className="w-full h-screen absolute top-0 z-50"
+              numberOfPieces={1500}
+              recycle={false}
+              gravity={0.09}
+            />
+          )}
+        </div>
       </div>
       <Controls />
     </>

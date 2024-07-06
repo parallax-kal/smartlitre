@@ -12,15 +12,13 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 import { useRecoilState } from "recoil";
 import Confetti from "react-confetti";
 import toast, { Toaster } from "react-hot-toast";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../ui/drawer";
+import { Drawer, DrawerClose, DrawerContent, DrawerTitle } from "../ui/drawer";
 
 const bottomControls = [
+  {
+    label: "Pump",
+    icon: PumpIcon,
+  },
   {
     label: "Friends",
     icon: FriendsIcon,
@@ -43,9 +41,7 @@ const Controls = () => {
   const [showPumpDrawer, setShowPumpDrawer] = useState(false);
   const [tabs, setTabs] = useRecoilState(tabsAtom);
   const handleControl = (label: string) => {
-    if (label === "Friends") {
-      setTabs([...tabs, "friends"]);
-    } else if (label === "Earn") {
+    if (label === "Earn") {
       setTabs([...tabs, "earn"]);
     }
   };
@@ -107,14 +103,17 @@ const Controls = () => {
     const newCollected = [...collected];
     newCollected[currentDay] = true;
 
-    toast.success(`You’ve received +${dropsDays[currentDay]} DROPS`, {
-      style: { zIndex: 999 },
-      className: "w-full !rounded-full !bg-[#AD12F5] !text-white !font-bold",
-    });
+    toast.success(
+      `You've received +${dropsDays[currentDay]} DROPS`
+      // {
+      //   style: { zIndex: 999 },
+      //   className: "w-full !rounded-full !bg-[#AD12F5] !text-white !font-bold",
+      // }
+    );
     setTotalDrops(newTotalDrops);
     setCollected(newCollected);
     setLastPumpTime(new Date());
-    setShowConfetti(true);
+    setShowConfetti(true);  
 
     setTimeout(() => {
       setShowConfetti(false);
@@ -128,17 +127,8 @@ const Controls = () => {
     }
   };
   return (
-    <div className="flex gap-3 justify-center w-full z-40">
+    <div className="flex gap-3 justify-center w-full mb-[52px]">
       <Drawer open={showPumpDrawer} onOpenChange={setShowPumpDrawer}>
-        <DrawerTrigger asChild>
-          <Button className=" relative flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 rounded-md  bg-[#C3C3C340]">
-            <PumpIcon height={24} />
-            <div>Pump</div>
-            <div className="absolute -top-3 right-0 px-3 bg-[#bd5ef8] text-white font-semibold rounded-full ">
-              <p>soon</p>
-            </div>
-          </Button>
-        </DrawerTrigger>
         <DrawerContent className="pt-6 flex flex-col items-center pb-3">
           {showConfetti && (
             <Confetti numberOfPieces={1500} recycle={false} gravity={0.09} />
@@ -211,9 +201,11 @@ const Controls = () => {
         >
           <control.icon height={24} />
           <div>{control.label}</div>
-          <div className="absolute -top-3 right-0 px-3 bg-[#bd5ef8] text-white font-semibold rounded-full ">
-            <p>soon</p>
-          </div>
+          {control.label !== "Earn" && (
+            <div className="absolute -top-3 right-0 px-3 bg-[#bd5ef8] text-white font-bold rounded-full ">
+              <p>soon</p>
+            </div>
+          )}
         </Button>
       ))}
     </div>
