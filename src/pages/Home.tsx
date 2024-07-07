@@ -125,7 +125,7 @@ const HomePage = () => {
           </Button>
         ) : (
           <Drawer>
-            <DrawerTrigger className="flex items-center gap-2 p-2 px-5 justify-between w-full bg-[#8d2aec] rounded-full">
+            <DrawerTrigger className="flex items-center gap-2 py-[6px] px-[13px] justify-between w-full bg-[#8d2aec] rounded-full">
               <div className="flex items-center gap-2">
                 <img
                   src={currentTank.image}
@@ -134,7 +134,7 @@ const HomePage = () => {
                 />
                 <div className="font-bold text-[15px]">{currentTank.name}</div>
               </div>
-              <FaChevronRight fontSize={24} className="text-white" />
+              <FaChevronRight fontSize={20} className="text-white" />
             </DrawerTrigger>
             <DrawerContent className="flex pt-7 pb-8 flex-col items-center">
               <DrawerTitle className="ml-auto mr-5">
