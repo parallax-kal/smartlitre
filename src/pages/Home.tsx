@@ -30,6 +30,7 @@ import {
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { FaChevronRight } from "react-icons/fa6";
 import toast from "react-hot-toast";
+import { BsExclamationCircleFill } from "react-icons/bs";
 
 const HomePage = () => {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -152,7 +153,18 @@ const HomePage = () => {
               <DrawerClose
                 onClick={() => {
                   setCurrentTank({ name: "", image: "" });
-                  toast.error(`You Left the ${currentTank.name} Tank`);
+                  toast.custom((t) => (
+                    <div
+                      className={`${
+                        t.visible ? "animate-enter" : "animate-leave"
+                      } flex items-center justify-start gap-2 w-full bg-[#6a1fc9] rounded-full py-3 px-3`}
+                    >
+                      <BsExclamationCircleFill size={25} />
+                      <h3 className="text-sm font-bold text-white">
+                        you've left the {currentTank.name} Tank
+                      </h3>
+                    </div>
+                  ));
                 }}
                 className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
                 style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
@@ -184,7 +196,7 @@ const HomePage = () => {
           <div className="flex justify-between font-bold">
             <div className="text-[11px]">Hydration Goal</div>
             <div className="text-[10px]">
-              Level {level+1}
+              Level {level + 1}
               /6
             </div>
           </div>
@@ -219,30 +231,30 @@ const HomePage = () => {
               currentLevelProgress >= 100 ? "animate-bounce" : ""
             )}
           >
-           <div
-           className={cn(
-            "w-full z-20 bg-contain bg-center bg-no-repeat bg-[#4d307a] relative overflow-hidden",
-            currentLevelProgress >= 100 ? "animate-bounce" : ""
-          )}
-           style={
-            currentLevelProgress >= 100
-              ? {
-                  backgroundImage: `url(${Fish})`,
-                  backgroundColor: "transparent",
-                  height: title === "Bronze" ? 126 : 220,
-                }
-              : {
-                  maskImage: `url(${Fish})`,
-                  maskSize: "100% 100%",
-                  maskPosition: "center",
-                  height: title === "Bronze" ? 126 : 220,
-                }
-          }
-           >
-            {waterLevel < 100 && waterLevel > 0 && (
-              <Water incomingWaterLevel={waterLevel} />
-            )}
-           </div>
+            <div
+              className={cn(
+                "w-full z-20 bg-contain bg-center bg-no-repeat bg-[#4d307a] relative overflow-hidden",
+                currentLevelProgress >= 100 ? "animate-bounce" : ""
+              )}
+              style={
+                currentLevelProgress >= 100
+                  ? {
+                      backgroundImage: `url(${Fish})`,
+                      backgroundColor: "transparent",
+                      height: title === "Bronze" ? 126 : 220,
+                    }
+                  : {
+                      maskImage: `url(${Fish})`,
+                      maskSize: "100% 100%",
+                      maskPosition: "center",
+                      height: title === "Bronze" ? 126 : 220,
+                    }
+              }
+            >
+              {waterLevel < 100 && waterLevel > 0 && (
+                <Water incomingWaterLevel={waterLevel} />
+              )}
+            </div>
           </div>
           {showConfetti && (
             <Confetti

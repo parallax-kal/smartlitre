@@ -8,6 +8,7 @@ import { displayNumbers } from "@/lib/utils";
 import Diamond from "@/assets/images/diamond.png";
 import Confetti from "react-confetti";
 import PumpIcon from "@/assets/svg/pump.svg?react";
+import { BsCheckCircleFill } from "react-icons/bs";
 
 const dropsDays = [
   500, 1000, 2500, 5000, 15000, 25000, 100000, 500000, 1000000, 5000000,
@@ -71,13 +72,18 @@ const DailyPump = () => {
     const newCollected = [...collected];
     newCollected[currentDay] = true;
 
-    toast.success(
-      `You've received +${dropsDays[currentDay]} DROPS`
-      // {
-      //   style: { zIndex: 999 },
-      //   className: "w-full !rounded-full !bg-[#AD12F5] !text-white !font-bold",
-      // }
-    );
+    toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } flex items-center justify-start gap-2 w-full bg-[#6a1fc9] rounded-full py-3 px-3`}
+        >
+          <BsCheckCircleFill size={25} />
+          <h3 className="text-sm font-bold text-white">
+            You've received +{dropsDays[currentDay]} DROPS
+          </h3>
+        </div>
+      ));
     setTotalDrops(newTotalDrops);
     setCollected(newCollected);
     setLastPumpTime(new Date());
