@@ -184,7 +184,7 @@ const HomePage = () => {
           <div className="flex justify-between font-bold">
             <div className="text-[11px]">Hydration Goal</div>
             <div className="text-[10px]">
-              Level {level}
+              Level {level+1}
               /6
             </div>
           </div>
@@ -211,31 +211,38 @@ const HomePage = () => {
             y={num.y - 80}
           />
         ))}
-        <div className="flex h-full w-full justify-center items-center grow shrink basis-auto">
+        <div className="flex w-full justify-center grow">
           <div
             onClick={handleClick}
             className={cn(
-              "w-full z-20 bg-contain bg-center bg-no-repeat bg-[#5417b0] relative overflow-hidden mt-2",
+              "w-full grow z-20 bg-contain bg-center bg-no-repeat relative overflow-hidden flex flex-col justify-center items-center",
               currentLevelProgress >= 100 ? "animate-bounce" : ""
             )}
-            style={
-              currentLevelProgress >= 100
-                ? {
-                    backgroundImage: `url(${Fish})`,
-                    backgroundColor: "transparent",
-                    height: title === "Bronze" ? 126 : 220,
-                  }
-                : {
-                    maskImage: `url(${Fish})`,
-                    maskSize: "100% 100%",
-                    maskPosition: "center",
-                    height: title === "Bronze" ? 126 : 220,
-                  }
-            }
           >
+           <div
+           className={cn(
+            "w-full z-20 bg-contain bg-center bg-no-repeat bg-[#4d307a] relative overflow-hidden",
+            currentLevelProgress >= 100 ? "animate-bounce" : ""
+          )}
+           style={
+            currentLevelProgress >= 100
+              ? {
+                  backgroundImage: `url(${Fish})`,
+                  backgroundColor: "transparent",
+                  height: title === "Bronze" ? 126 : 220,
+                }
+              : {
+                  maskImage: `url(${Fish})`,
+                  maskSize: "100% 100%",
+                  maskPosition: "center",
+                  height: title === "Bronze" ? 126 : 220,
+                }
+          }
+           >
             {waterLevel < 100 && waterLevel > 0 && (
               <Water incomingWaterLevel={waterLevel} />
             )}
+           </div>
           </div>
           {showConfetti && (
             <Confetti

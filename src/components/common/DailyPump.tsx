@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { Drawer, DrawerClose, DrawerContent, DrawerTitle } from "../ui/drawer";
+import { DrawerClose, DrawerContent, DrawerTitle } from "../ui/drawer";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { displayNumbers } from "@/lib/utils";
@@ -14,7 +14,6 @@ const dropsDays = [
 ];
 
 const DailyPump = () => {
-  const [showPumpDrawer, setShowPumpDrawer] = useState(false);
   const [currentDay, setCurrentDay] = useState(0);
   const [totalDrops, setTotalDrops] = useState(0);
   const [collected, setCollected] = useState(Array(10).fill(false));
