@@ -113,7 +113,7 @@ const Controls = () => {
     setTotalDrops(newTotalDrops);
     setCollected(newCollected);
     setLastPumpTime(new Date());
-    setShowConfetti(true);  
+    setShowConfetti(true);
 
     setTimeout(() => {
       setShowConfetti(false);
@@ -200,7 +200,7 @@ const Controls = () => {
           className=" relative flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 bg-[#C3C3C340]"
         >
           <control.icon height={24} />
-          <div>{control.label}</div>
+          <div className="font-bold">{control.label}</div>
           {control.label !== "Earn" && (
             <div className="absolute -top-3 right-0 px-3 bg-[#bd5ef8] text-white font-bold rounded-full ">
               <p>soon</p>
