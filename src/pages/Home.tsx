@@ -58,7 +58,7 @@ const HomePage = () => {
     const addition = eval("100 / (10*(level+1))");
     if (level < 6 && currentLevelProgress <= 100 && energy > 0) {
       setEnergy((prev) => Math.max(prev - 1, 0));
-      setBalance(balance + parseInt(addition.toFixed(1)));
+      setBalance(balance + 1);
       const newProgress = waterLevel + addition;
 
       setWaterLevel(() => {
@@ -77,7 +77,7 @@ const HomePage = () => {
       const clickY = event.clientY;
       setNumbers([
         ...numbers,
-        { number: parseInt(addition.toFixed(2)), x: clickX, y: clickY },
+        { number: 1, x: clickX, y: clickY },
       ]);
     }
     if (energy === 0) {
