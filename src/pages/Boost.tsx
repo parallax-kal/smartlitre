@@ -38,6 +38,7 @@ const boosters = [
     message: "You can now earn +2 DROPS per tap",
   },
 ];
+
 const Boost = () => {
   const [balance] = useRecoilState(balanceAtom);
 
