@@ -43,7 +43,7 @@ const Controls = () => {
   const [tabs, setTabs] = useRecoilState(tabsAtom);
 
   const handleControl = (label: string) => {
-    if (label !== "Pump") setTabs([...tabs, label.toLowerCase()]);
+    if (label === "Earn") setTabs([...tabs, label.toLowerCase()]);
   };
 
   const [currentDay, setCurrentDay] = useState(0);
