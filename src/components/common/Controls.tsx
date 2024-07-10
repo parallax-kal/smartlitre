@@ -12,7 +12,13 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 import { useRecoilState } from "recoil";
 import Confetti from "react-confetti";
 import toast, { Toaster } from "react-hot-toast";
-import { Drawer, DrawerClose, DrawerContent, DrawerTitle } from "../ui/drawer";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
 import { BsCheckCircleFill } from "react-icons/bs";
 
 const bottomControls = [
@@ -43,7 +49,7 @@ const Controls = () => {
   const [tabs, setTabs] = useRecoilState(tabsAtom);
 
   const handleControl = (label: string) => {
-    if (label === "Earn") setTabs([...tabs, label.toLowerCase()]);
+    if (label !== "Pump") setTabs([...tabs, label.toLowerCase()]);
   };
 
   const [currentDay, setCurrentDay] = useState(0);
@@ -134,6 +140,12 @@ const Controls = () => {
   return (
     <div className="flex gap-3 justify-center w-full mb-[52px]">
       <Drawer open={showPumpDrawer} onOpenChange={setShowPumpDrawer}>
+        <DrawerTrigger asChild>
+          <Button className=" relative flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 bg-[#C3C3C340]">
+            <PumpIcon height={24} />
+            <div className="font-bold">Pump</div>
+          </Button>
+        </DrawerTrigger>
         <DrawerContent className="pt-6 flex flex-col items-center pb-3">
           {showConfetti && (
             <Confetti numberOfPieces={1500} recycle={false} gravity={0.09} />
@@ -198,21 +210,20 @@ const Controls = () => {
           <Toaster position="bottom-center" />
         </DrawerContent>
       </Drawer>
-      {bottomControls.map((control, index) => (
-        <Button
-          key={index}
-          onClick={() => handleControl(control.label)}
-          className=" relative flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 bg-[#C3C3C340]"
-        >
-          <control.icon height={24} />
-          <div className="font-bold">{control.label}</div>
-          {control.label !== "Earn" && (
-            <div className="absolute -top-[13px] right-0 py-0 px-2 bg-[#bd5ef8] text-white font-bold rounded-full text-[11px] h-fit">
-              <p className="h-4 flex items-center justify-center">soon</p>
-            </div>
-          )}
-        </Button>
-      ))}
+      {bottomControls.map((control, index) => {
+        return (
+          control.label !== "Pump" && (
+            <Button
+              key={index}
+              onClick={() => handleControl(control.label)}
+              className=" relative flex flex-col items-center h-[60px] mt-5 w-[70px] gap-1 bg-[#C3C3C340]"
+            >
+              <control.icon height={24} />
+              <div className="font-bold">{control.label}</div>
+            </Button>
+          )
+        );
+      })}
     </div>
   );
 };
