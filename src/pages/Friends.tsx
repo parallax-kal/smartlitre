@@ -16,10 +16,6 @@ import { displayNumbers } from "@/lib/utils";
 import FriendIcon from "@/assets/svg/friend.svg?react";
 import { LevelDatable } from "@/components/common/level-datatable";
 import { LevelFriend } from "@/interface/LevelFriend";
-import DailyPump from "@/components/common/DailyPump";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { currentTankAtom, tabsAtom } from "@/lib/atom";
-
 const inviteOptions = [
   {
     title: "Telegram User",
