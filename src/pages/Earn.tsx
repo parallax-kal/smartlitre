@@ -4,7 +4,7 @@ import DropIcon from "@/assets/svg/dropIcon.svg";
 // import DropIcon from "@/assets/images/drop.png";
 import Telegram from "@/assets/images/tele.gif";
 import Twitter from "@/assets/svg/twitter.svg";
-import Youtube from "@/assets/svg/earn/youtube.svg";
+import Youtube from "@/assets/svg/youtube.svg";
 import Community from "@/assets/images/community.png";
 import DailPump from "@/assets/images/dailpump.png";
 import JoinTank from "@/assets/images/jointank.png";
@@ -24,9 +24,13 @@ import {
 import DailyPump from "@/components/common/DailyPump";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import Confetti from "react-confetti";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { balanceAtom, currentTankAtom, tabsAtom } from "@/lib/atom";
+import {
+  balanceAtom,
+  confettiAtom,
+  currentTankAtom,
+  tabsAtom,
+} from "@/lib/atom";
 import { Toast } from "@/lib/toast";
 
 const allTasks = [
@@ -78,7 +82,7 @@ const allTasks = [
 ];
 
 const Earn = () => {
-  const [showConfetti, setShowConfetti] = useState(false);
+  const setShowConfetti = useSetRecoilState(confettiAtom);
   const currentTank = useRecoilValue(currentTankAtom);
   const setBalance = useSetRecoilState(balanceAtom);
   const [tabs, setTabs] = useRecoilState(tabsAtom);
@@ -260,7 +264,9 @@ const Earn = () => {
                       }
                       if (task.id === 6) {
                         setTabs([...tabs, "jointank"]);
+                        return;
                       }
+                      Toast("Task Incomplete", "info");
                       return;
                     }}
                   >
@@ -271,9 +277,6 @@ const Earn = () => {
             </Drawer>
           );
         })}
-        {showConfetti && (
-          <Confetti numberOfPieces={1500} recycle={false} gravity={0.09} />
-        )}
       </div>
     </div>
   );

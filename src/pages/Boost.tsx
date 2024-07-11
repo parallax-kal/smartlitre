@@ -6,8 +6,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { balanceAtom, energyAtom, tabsAtom } from "@/lib/atom";
-import { displayNumbers } from "@/lib/utils";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { cn, displayNumbers } from "@/lib/utils";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { Button } from "@/components/ui/button";
 import DropIcon from "@/assets/svg/dropIcon.svg";
 import EnergyIcon from "@/assets/svg/energyIcon.svg";
@@ -23,7 +23,7 @@ const boosters = [
     title: "Electrolyte",
     subtitle: "Increase the amount of energy",
     desc: "+500 energy points for Silver level",
-    drops: 20000,
+    drops: 3000,
     level: "Silver",
     message: "Boost has been increased by 500 points",
   },
@@ -39,7 +39,7 @@ const boosters = [
 ];
 
 const Boost = () => {
-  const balance = useRecoilValue(balanceAtom);
+  const [balance, setBalance] = useRecoilState(balanceAtom);
   const setTabs = useSetRecoilState(tabsAtom);
   const dailEnergy = localStorage.getItem("dailyEnergy") ?? "6";
   const setEnergy = useSetRecoilState(energyAtom);
@@ -180,48 +180,37 @@ const Boost = () => {
                 </span>
                 <span className="font-bold">{booster.level} level</span>
               </p>
-              {booster.title === "Multitap" ? (
-                <DrawerClose
-                  className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
-                  style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
-                  onClick={() => {
-                    Toast(booster.message, "info");
-                    setTimeout(() => {
-                      setTabs((tabs) =>
-                        tabs.length === 1
-                          ? tabs
-                          : tabs.slice(0, tabs.length - 1)
-                      );
-                    }, 20);
-                  }}
-                >
-                  Get
-                </DrawerClose>
-              ) : balance >= 20000 && booster.title === "Electrolyte" ? (
-                <DrawerClose
-                  className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
-                  style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
-                  onClick={() => {
-                    Toast(booster.message, "info");
-                    setTimeout(() => {
-                      setTabs((tabs) =>
-                        tabs.length === 1
-                          ? tabs
-                          : tabs.slice(0, tabs.length - 1)
-                      );
-                    }, 20);
-                  }}
-                >
-                  Get
-                </DrawerClose>
-              ) : (
-                <DrawerClose
-                  className="w-[250px] bg-[#7054a5] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
-                  style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
-                >
-                  Insufficient Funds
-                </DrawerClose>
-              )}
+              <DrawerClose
+                className={cn(
+                  "w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]",
+                  balance < booster.drops ? "bg-[#7054a5]" : ""
+                )}
+                style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
+                onClick={() => {
+                  if (booster.title === "Multitap") {
+                    if (localStorage.getItem("dropsAmount") == "2") {
+                      return Toast("You are already adding 2 drops", "info");
+                    }
+                    localStorage.setItem("dropsAmount", "2");
+                  } else {
+                    if (localStorage.getItem("energyMax") === "1000") {
+                      return Toast("You are already at 1000 energy ms", "info");
+                    }
+                    setEnergy(1000);
+                    localStorage.setItem("energyMax", "1000");
+                  }
+                  Toast(booster.message, "info");
+                  setTimeout(() => {
+                    setTabs((tabs) =>
+                      tabs.length === 1 ? tabs : tabs.slice(0, tabs.length - 1)
+                    );
+                  }, 20);
+                  setBalance(balance - booster.drops);
+                }}
+                disabled={balance < booster.drops}
+              >
+                {balance < booster.drops ? "Insufficeint Funds" : "Get"}
+              </DrawerClose>
             </DrawerContent>
           </Drawer>
         ))}
