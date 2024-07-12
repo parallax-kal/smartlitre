@@ -66,13 +66,6 @@ const allTasks = [
     completed: false,
   },
   {
-    id: 5,
-    title: "Daily Pump",
-    drops: 6649000,
-    image: DailPump,
-    completed: false,
-  },
-  {
     id: 6,
     title: "Join a Tank",
     drops: 5000,
@@ -228,52 +221,46 @@ const Earn = () => {
                   )}
                 </Button>
               </DrawerTrigger>
-              {task.id == 5 ? (
-                <DailyPump
-                  handleTaskCompletion={() => handleTaskCompletion(task.id)}
-                />
-              ) : (
-                <DrawerContent className="flex flex-col items-center pb-8 pt-7">
-                  <DrawerTitle className="ml-auto mr-5">
-                    <DrawerClose>
-                      <IoCloseCircleSharp color="#FFFFFF80" size={25} />
-                    </DrawerClose>
-                  </DrawerTitle>
-                  <img
-                    src={task.image}
-                    alt={`${task.id}`}
-                    className="w-[100px]"
-                  />
-                  <div className="font-bold text-[24px] leading-[18px] mt-6 mb-2">
-                    {task.title}
-                  </div>
-                  <p className="text-sm font-extrabold text-white leading-[18px] mt-2 mb-6">
-                    Earn +{displayNumbers(task.drops)} DROPS
-                  </p>
-                  <DrawerClose
-                    className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
-                    style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
-                    onClick={() => {
-                      // task.completed
-                      //   ? ""
-                      //   : task.id === 6
-                      //   ? setTabs([...tabs, "jointank"])
-                      //   : handleTaskCompletion(task.id);
-                      if (task.completed) {
-                        return;
-                      }
-                      if (task.id === 6) {
-                        setTabs([...tabs, "jointank"]);
-                        return;
-                      }
-                      Toast("Task Incomplete", "info");
-                      return;
-                    }}
-                  >
-                    {task.completed ? "Completed" : "Check"}
+              <DrawerContent className="flex flex-col items-center pb-8 pt-7">
+                <DrawerTitle className="ml-auto mr-5">
+                  <DrawerClose>
+                    <IoCloseCircleSharp color="#FFFFFF80" size={25} />
                   </DrawerClose>
-                </DrawerContent>
-              )}
+                </DrawerTitle>
+                <img
+                  src={task.image}
+                  alt={`${task.id}`}
+                  className="w-[100px]"
+                />
+                <div className="font-bold text-[24px] leading-[18px] mt-6 mb-2">
+                  {task.title}
+                </div>
+                <p className="text-sm font-extrabold text-white leading-[18px] mt-2 mb-6">
+                  Earn +{displayNumbers(task.drops)} DROPS
+                </p>
+                <DrawerClose
+                  className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
+                  style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
+                  onClick={() => {
+                    // task.completed
+                    //   ? ""
+                    //   : task.id === 6
+                    //   ? setTabs([...tabs, "jointank"])
+                    //   : handleTaskCompletion(task.id);
+                    if (task.completed) {
+                      return;
+                    }
+                    if (task.id === 6) {
+                      setTabs([...tabs, "jointank"]);
+                      return;
+                    }
+                    Toast("Task Incomplete", "info");
+                    return;
+                  }}
+                >
+                  {task.completed ? "Completed" : "Check"}
+                </DrawerClose>
+              </DrawerContent>
             </Drawer>
           );
         })}
