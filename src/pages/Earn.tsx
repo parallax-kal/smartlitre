@@ -1,18 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import SaveIcon from "@/assets/svg/save.svg?react";
 import DropIcon from "@/assets/svg/dropIcon.svg";
-// import DropIcon from "@/assets/images/drop.png";
 import Telegram from "@/assets/images/tele.gif";
 import Twitter from "@/assets/svg/twitter.svg";
 import Youtube from "@/assets/svg/youtube.svg";
 import Community from "@/assets/images/community.png";
-import DailPump from "@/assets/images/dailpump.png";
 import JoinTank from "@/assets/images/jointank.png";
 import { Button } from "@/components/ui/button";
 import { FaCheck, FaChevronRight } from "react-icons/fa6";
 import Diamond from "@/assets/images/diamond.png";
 import { displayNumbers } from "@/lib/utils";
-// import { LiaCheckSolid } from "react-icons/lia";
 
 import {
   Drawer,
@@ -21,7 +18,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import DailyPump from "@/components/common/DailyPump";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -221,46 +217,48 @@ const Earn = () => {
                   )}
                 </Button>
               </DrawerTrigger>
-              <DrawerContent className="flex flex-col items-center pb-8 pt-7">
-                <DrawerTitle className="ml-auto mr-5">
-                  <DrawerClose>
-                    <IoCloseCircleSharp color="#FFFFFF80" size={25} />
+              {
+                <DrawerContent className="flex flex-col items-center pb-8 pt-7">
+                  <DrawerTitle className="ml-auto mr-5">
+                    <DrawerClose>
+                      <IoCloseCircleSharp color="#FFFFFF80" size={25} />
+                    </DrawerClose>
+                  </DrawerTitle>
+                  <img
+                    src={task.image}
+                    alt={`${task.id}`}
+                    className="w-[100px]"
+                  />
+                  <div className="font-bold text-[24px] leading-[18px] mt-6 mb-2">
+                    {task.title}
+                  </div>
+                  <p className="text-sm font-extrabold text-white leading-[18px] mt-2 mb-6">
+                    Earn +{displayNumbers(task.drops)} DROPS
+                  </p>
+                  <DrawerClose
+                    className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
+                    style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
+                    onClick={() => {
+                      // task.completed
+                      //   ? ""
+                      //   : task.id === 6
+                      //   ? setTabs([...tabs, "jointank"])
+                      //   : handleTaskCompletion(task.id);
+                      if (task.completed) {
+                        return;
+                      }
+                      if (task.id === 6) {
+                        setTabs([...tabs, "jointank"]);
+                        return;
+                      }
+                      Toast("Task Incomplete", "info");
+                      return;
+                    }}
+                  >
+                    {task.completed ? "Completed" : "Check"}
                   </DrawerClose>
-                </DrawerTitle>
-                <img
-                  src={task.image}
-                  alt={`${task.id}`}
-                  className="w-[100px]"
-                />
-                <div className="font-bold text-[24px] leading-[18px] mt-6 mb-2">
-                  {task.title}
-                </div>
-                <p className="text-sm font-extrabold text-white leading-[18px] mt-2 mb-6">
-                  Earn +{displayNumbers(task.drops)} DROPS
-                </p>
-                <DrawerClose
-                  className="w-[250px] bg-[#9712F4] h-[48px] font-bold text-[16px] leading-5 rounded-[30px]"
-                  style={{ boxShadow: "0px 4px 4px 0px #00000040" }}
-                  onClick={() => {
-                    // task.completed
-                    //   ? ""
-                    //   : task.id === 6
-                    //   ? setTabs([...tabs, "jointank"])
-                    //   : handleTaskCompletion(task.id);
-                    if (task.completed) {
-                      return;
-                    }
-                    if (task.id === 6) {
-                      setTabs([...tabs, "jointank"]);
-                      return;
-                    }
-                    Toast("Task Incomplete", "info");
-                    return;
-                  }}
-                >
-                  {task.completed ? "Completed" : "Check"}
-                </DrawerClose>
-              </DrawerContent>
+                </DrawerContent>
+              }
             </Drawer>
           );
         })}
