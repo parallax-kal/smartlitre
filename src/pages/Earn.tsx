@@ -80,21 +80,21 @@ const Earn = () => {
   const [tasks, setTasks] = useState(allTasks);
 
   // Function to handle task completion
-  const handleTaskCompletion = (taskId: number) => {
-    const task = tasks.filter((t) => t.id === taskId);
-    if (!task[0].completed) {
-      setTasks(
-        tasks.map((task) =>
-          task.id === taskId ? { ...task, completed: true } : task
-        )
-      );
-      Toast("Task complete", "info");
-      setShowConfetti(true);
-    }
-    setTimeout(() => {
-      setShowConfetti(false);
-    }, 5000);
-  };
+  // const handleTaskCompletion = (taskId: number) => {
+  //   const task = tasks.filter((t) => t.id === taskId);
+  //   if (!task[0].completed) {
+  //     setTasks(
+  //       tasks.map((task) =>
+  //         task.id === taskId ? { ...task, completed: true } : task
+  //       )
+  //     );
+  //     Toast("Task complete", "info");
+  //     setShowConfetti(true);
+  //   }
+  //   setTimeout(() => {
+  //     setShowConfetti(false);
+  //   }, 5000);
+  // };
 
   const handleLinktasksCompletion = (taskId: number, URL?: string) => {
     if (URL) window.location.href = URL;
