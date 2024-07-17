@@ -7,23 +7,24 @@ import { displayNumbers } from "@/lib/utils";
 import DropIcon from "@/assets/svg/dropIcon.svg?react";
 import PumpIcon from "@/assets/svg/pumpIcon.svg";
 import { Toast } from "@/lib/toast";
+import Confetti from "react-confetti";
 import { useSetRecoilState } from "recoil";
-import { confettiAtom } from "@/lib/atom";
+import { balanceAtom } from "@/lib/atom";
 
 const dropsDays = [
   500, 1000, 2500, 5000, 15000, 25000, 100000, 500000, 1000000, 5000000,
 ];
 
-type Props = {
-  handleTaskCompletion?: (taskId: number) => void;
-};
-const DailyPump = ({ handleTaskCompletion }: Props) => {
+
+const DailyPump = (
+  
+) => {
   const [currentDay, setCurrentDay] = useState(0);
   const [totalDrops, setTotalDrops] = useState(0);
   const [collected, setCollected] = useState(Array(10).fill(false));
   const [lastPumpTime, setLastPumpTime] = useState<Date | null>(null);
   const [isPumpAvailable, setIsPumpAvailable] = useState(true);
-  const setShowConfetti = useSetRecoilState(confettiAtom);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   // pumping functionality
 
@@ -68,6 +69,8 @@ const DailyPump = ({ handleTaskCompletion }: Props) => {
     }
   }, [lastPumpTime]);
 
+  const setBalance = useSetRecoilState(balanceAtom);
+
   const handlePump = () => {
     if (collected[currentDay] || !isPumpAvailable) return;
 
@@ -76,10 +79,14 @@ const DailyPump = ({ handleTaskCompletion }: Props) => {
     newCollected[currentDay] = true;
 
     Toast(`You've received +${dropsDays[currentDay]} DROPS`, "info");
+    setBalance((prev) => {
+      const newBalance = prev + dropsDays[currentDay];
+      localStorage.setItem("balance", newBalance.toString());
+      return newBalance;
+    });
     setTotalDrops(newTotalDrops);
     setCollected(newCollected);
     setLastPumpTime(new Date());
-    if (!handleTaskCompletion) setShowConfetti(true);
 
     setTimeout(() => {
       setShowConfetti(false);
@@ -94,6 +101,9 @@ const DailyPump = ({ handleTaskCompletion }: Props) => {
   };
   return (
     <DrawerContent className="flex flex-col items-center pt-6 pb-3">
+      {showConfetti && (
+        <Confetti numberOfPieces={1500} recycle={false} gravity={0.09} />
+      )}
       <DrawerTitle className="flex items-center justify-between w-full mr-5">
         <div style={{ width: "40px" }}></div>
         <div className="font-extrabold text-[24px] leading-6">Pump DROPS</div>
@@ -118,7 +128,7 @@ const DailyPump = ({ handleTaskCompletion }: Props) => {
             }`}
           >
             <div>Day {index + 1}</div>
-            <DropIcon className="my-1 h-6 w-6"/>
+            <DropIcon className="my-1 h-6 w-6" />
             <div>{displayNumbers(drops)}</div>
           </Button>
         ))}
@@ -128,7 +138,6 @@ const DailyPump = ({ handleTaskCompletion }: Props) => {
           <Button
             onClick={() => {
               handlePump();
-              handleTaskCompletion && handleTaskCompletion(4);
             }}
             disabled={!isPumpAvailable}
             className="bg-[#9712F4] font-bold h-12 w-full text-[16px] rounded-full"

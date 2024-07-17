@@ -2,8 +2,8 @@
 import SaveIcon from "@/assets/svg/save.svg?react";
 import DropIcon from "@/assets/svg/dropIcon.svg?react";
 import Telegram from "@/assets/images/telegram.gif";
-import Twitter from "@/assets/svg/twitter.svg";
-import Youtube from "@/assets/svg/youtube.svg";
+import Twitter from "@/assets/images/tweeter.png";
+// import Youtube from "@/assets/svg/youtube.svg";
 import Community from "@/assets/images/community.png";
 import JoinTank from "@/assets/images/jointank.png";
 import { Button } from "@/components/ui/button";
@@ -44,14 +44,14 @@ const allTasks = [
     completed: false,
     link: "https://x.com/smartlitre?s=21&t=AXJCLgvmsPnKoMsdF5V9Cw",
   },
-  {
-    id: 3,
-    title: "Watch SmartLitre Game Demo",
-    drops: 5000,
-    image: Youtube,
-    completed: false,
-    link: "http://www.youtube.com/@SmartLitre",
-  },
+  // {
+  //   id: 3,
+  //   title: "Watch SmartLitre Game Demo",
+  //   drops: 5000,
+  //   image: Youtube,
+  //   completed: false,
+  //   link: "http://www.youtube.com/@SmartLitre",
+  // },
   {
     id: 4,
     title: "Invite 3 friends",
@@ -102,7 +102,10 @@ const Earn = () => {
   useEffect(() => {
     const task = tasks.filter((t) => t.id === 6);
     if (currentTank.name !== "" && !task[0].completed) {
-      setBalance((prev) => prev + 5000);
+      setBalance((prev) => {
+        localStorage.setItem("balance", (prev + 5000).toString());
+        return prev + 5000;
+      });
       setTasks(
         tasks.map((task) =>
           task.id === 6 ? { ...task, completed: true } : task
@@ -168,7 +171,7 @@ const Earn = () => {
                     {task.title}
                   </div>
                   <div className="flex items-center gap-0.5 -mt-1 -ml-1">
-                    <DropIcon className="h-4 w-4" />
+                    <DropIcon className="h-3 w-3  -mt-0.5" />
                     <div className="font-extrabold text-[11px] leading-6">
                       +{displayNumbers(task.drops)}
                     </div>
@@ -201,7 +204,7 @@ const Earn = () => {
                         {task.title}
                       </div>
                       <div className="flex items-center -mt-1 gap-0.5 -ml-1">
-                        <DropIcon className="h-4 w-4 -mt-0.5" />
+                        <DropIcon className="h-3 w-3  -mt-0.5" />
                         <div className="font-extrabold text-[11px] leading-6">
                           +{displayNumbers(task.drops)}
                         </div>

@@ -58,7 +58,9 @@ const HomePage = () => {
     const addition = eval("100 / (10*(level+1))");
     if (level < 6 && currentLevelProgress <= 100 && energy > 0) {
       setEnergy((prev) => Math.max(prev - 1, 0));
-      setBalance((prev) => prev + amount);
+      const newBalance =  balance + amount;
+      setBalance(newBalance);
+      localStorage.setItem("balance", newBalance.toString());
       const newProgress = waterLevel + addition;
 
       setWaterLevel(() => {
@@ -68,11 +70,7 @@ const HomePage = () => {
         if (newProgress === 100) return 99;
         return newProgress;
       });
-      if (newProgress === 100) {
-        setTimeout(() => {
-          setWaterLevel(0);
-        }, 800);
-      }
+      
       const clickX = event.clientX;
       const clickY = event.clientY;
       setNumbers([...numbers, { number: amount, x: clickX, y: clickY }]);
@@ -109,6 +107,7 @@ const HomePage = () => {
         );
       setTimeout(() => {
         setLevel(level + 1);
+        localStorage.setItem("level", (level + 1).toString());
       }, 5000);
       setWaterLevel(0);
     }
@@ -168,7 +167,7 @@ const HomePage = () => {
           </Drawer>
         )}
         <div className="flex mt-1 justify-center items-center gap-2 font-extrabold text-[36px]">
-          <DropIcon className="-mt-1" height={30} width={30} />
+          <DropIcon height={28} width={28} />
           <div>{displayNumbers(parseInt(balance.toFixed(2)))}</div>
         </div>
         <Button
