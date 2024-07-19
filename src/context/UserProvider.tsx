@@ -2,13 +2,19 @@ import { User } from "@/interface/User";
 import LoadingPage from "@/pages/Loading";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { firestoreDB } from "@/firebase/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  getDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 
 // function to get the current user from the firestore
-
-export const getUserByTelegramId = async (
-  id: number
-): Promise<User | null> => {
+export const getUserByTelegramId = async (id: number): Promise<User | null> => {
   try {
     const userRef = collection(firestoreDB, "users");
     const q = query(userRef, where("id", "==", id));
@@ -27,6 +33,34 @@ export const getUserByTelegramId = async (
   }
 };
 
+// Function to fetch a user from the database
+export const fetchUser = async (userId: string): Promise<User | null> => {
+  const userRef = doc(firestoreDB, "users", userId);
+  const docSnap = await getDoc(userRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data() as User;
+  } else {
+    console.log("No such user!");
+    return null;
+  }
+};
+
+// function to save user to the database
+export const saveUser = async (user: User): Promise<void> => {
+  const userRef = doc(firestoreDB, "users", user.id.toString());
+
+  const docSnap = await getDoc(userRef);
+  if (docSnap.exists()) {
+    await updateDoc(userRef, {
+      ...user,
+    });
+  } else {
+    await setDoc(userRef, {
+      ...user,
+    });
+  }
+};
 export type UserContextType = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -59,14 +93,26 @@ export default function UserProvider({ children }: ContextProps) {
         webApp.expand();
         webApp.disableVerticalSwipes();
 
-        const telegramId = webApp.initDataUnsafe?.user.id;
-        if (telegramId) {
-          const fetchedUser = await getUserByTelegramId(telegramId);
-          console.log("fetched user: ", fetchedUser);
+        const teleUser = webApp.initDataUnsafe?.user;
+        const currentUser = {
+          id: teleUser.id,
+          first_name: teleUser.first_name,
+          last_name: teleUser.last_name,
+          username: teleUser.username,
+          balance: Number(localStorage.getItem("balance")),
+          level: Number(localStorage.getItem("level")),
+          tank: JSON.stringify(localStorage.getItem("currentTank")),
+        } as User;
 
-          if (fetchedUser) setUser(fetchedUser);
-          else {
-            setUser(webApp.initDataUnsafe.user);
+        const telegramId = teleUser?.id;
+        if (telegramId) {
+          await saveUser(currentUser);
+
+          const fetchedUser = await fetchUser(telegramId.toString());
+          if (fetchedUser) {
+             setUser(fetchedUser);
+          }else{
+            setUser(currentUser);
           }
           setLoading(false);
         }
