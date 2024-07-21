@@ -114,6 +114,7 @@ const JoinTank = () => {
                 onClick={() => {
                   setCurrentTank(tank);
                   localStorage.setItem("currentTank",tank.name)
+                  localStorage.setItem("joinedTank","yes")
                   setTabs((tabs) =>
                     tabs.length === 1 ? tabs : tabs.slice(0, tabs.length - 1)
                   );

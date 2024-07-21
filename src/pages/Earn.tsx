@@ -97,7 +97,7 @@ const Earn = () => {
   const handleLinktasksCompletion = (taskId: number, URL?: string) => {
     if (URL) window.location.href = URL;
     localStorage.setItem("linkTaskId", taskId.toString());
-     setTimeout(() => {
+    setTimeout(() => {
       if (taskId && tabs[1] === "earn") {
         const task = tasks.filter((t) => t.id === taskId);
         if (!task[0].completed) {
@@ -117,15 +117,19 @@ const Earn = () => {
   useEffect(() => {
     const task = tasks.filter((t) => t.id === 6);
     if (currentTank.name !== "" && !task[0].completed) {
-      setBalance((prev) => {
-        localStorage.setItem("balance", (prev + 5000).toString());
-        return prev + 5000;
-      });
+      if (localStorage.getItem("joinedTank")! === "yes") {
+        setBalance((prev) => {
+          localStorage.setItem("balance", (prev + 5000).toString());
+          return prev + 5000;
+        });
+      }
+
       setTasks(
         tasks.map((task) =>
           task.id === 6 ? { ...task, completed: true } : task
         )
       );
+      localStorage.setItem("joinedTank", "yes");
       setShowConfetti(true);
       Toast("Task complete", "info");
     }
