@@ -117,7 +117,7 @@ const Earn = () => {
   useEffect(() => {
     const task = tasks.filter((t) => t.id === 6);
     if (currentTank.name !== "" && !task[0].completed) {
-      if (localStorage.getItem("joinedTank")! === "yes") {
+      if (localStorage.getItem("joinedTank") !== "yes") {
         setBalance((prev) => {
           localStorage.setItem("balance", (prev + 5000).toString());
           return prev + 5000;
