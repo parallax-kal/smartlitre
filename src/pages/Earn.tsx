@@ -97,6 +97,21 @@ const Earn = () => {
   const handleLinktasksCompletion = (taskId: number, URL?: string) => {
     if (URL) window.location.href = URL;
     localStorage.setItem("linkTaskId", taskId.toString());
+     setTimeout(() => {
+      if (taskId && tabs[1] === "earn") {
+        const task = tasks.filter((t) => t.id === taskId);
+        if (!task[0].completed) {
+          setTasks(
+            tasks.map((task) =>
+              task.id === taskId ? { ...task, completed: true } : task
+            )
+          );
+          setShowConfetti(true);
+          Toast("Task complete", "info");
+        }
+      }
+      localStorage.removeItem("linkTaskId");
+    }, 1000);
   };
 
   useEffect(() => {
@@ -116,27 +131,27 @@ const Earn = () => {
     }
   }, [currentTank]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      const taskId = localStorage.getItem("linkTaskId");
-      if (taskId && tabs[1] === "earn") {
-        const task = tasks.filter((t) => t.id === parseInt(taskId));
-        if (!task[0].completed) {
-          setTasks(
-            tasks.map((task) =>
-              task.id === parseInt(taskId) ? { ...task, completed: true } : task
-            )
-          );
-          setShowConfetti(true);
-          Toast("Task complete", "info");
-        }
-      }
-      localStorage.removeItem("linkTaskId");
-    }, 1000);
-    setTimeout(() => {
-      setShowConfetti(false);
-    }, 5000);
-  }, [tasks]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const taskId = localStorage.getItem("linkTaskId");
+  //     if (taskId && tabs[1] === "earn") {
+  //       const task = tasks.filter((t) => t.id === parseInt(taskId));
+  //       if (!task[0].completed) {
+  //         setTasks(
+  //           tasks.map((task) =>
+  //             task.id === parseInt(taskId) ? { ...task, completed: true } : task
+  //           )
+  //         );
+  //         setShowConfetti(true);
+  //         Toast("Task complete", "info");
+  //       }
+  //     }
+  //     localStorage.removeItem("linkTaskId");
+  //   }, 1000);
+  //   setTimeout(() => {
+  //     setShowConfetti(false);
+  //   }, 5000);
+  // }, [tasks]);
   return (
     <div className="px-5 pt-2">
       <div className="font-extrabold text-center text-[20px] leading-6">
