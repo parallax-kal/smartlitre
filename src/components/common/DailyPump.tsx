@@ -86,10 +86,7 @@ const DailyPump = (
     setTotalDrops(newTotalDrops);
     setCollected(newCollected);
     setLastPumpTime(new Date());
-
-    setTimeout(() => {
-      setShowConfetti(false);
-    }, 5000);
+    setShowConfetti(true);
 
     if (currentDay === 9) {
       setCurrentDay(0);
@@ -100,7 +97,6 @@ const DailyPump = (
   };
   return (
     <DrawerContent className="flex flex-col items-center pt-6 pb-3">
-      
       <DrawerTitle className="flex items-center justify-between w-full mr-5">
         <div style={{ width: "40px" }}></div>
         <div className="font-extrabold text-[24px] leading-6">Pump DROPS</div>
